@@ -17,6 +17,11 @@ public class TestGenerationController {
     private final LLMTestGenerator llmTestGenerator;
     private final TestCodeGenerator testCodeGenerator;
 
+    public TestGenerationController(LLMTestGenerator llmTestGenerator, TestCodeGenerator testCodeGenerator) {
+        this.llmTestGenerator = llmTestGenerator;
+        this.testCodeGenerator = testCodeGenerator;
+    }
+
     /**
      * Generates Rest-Assured test code from the provided API details and test types.
      *
