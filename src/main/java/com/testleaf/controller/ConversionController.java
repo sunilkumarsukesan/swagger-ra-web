@@ -23,12 +23,6 @@ public class ConversionController {
     private final LLMConverterService converterService;
     private final TestCodeGenerator testCodeGenerator;
 
-    public ConversionController(LLMConverterService converterService, TestCodeGenerator testCodeGenerator) {
-        this.converterService = converterService;
-        this.testCodeGenerator = testCodeGenerator;
-    }
-
-
     // Endpoint to convert Selenium Java code to Playwright TypeScript code
     @PostMapping("/seleniumToPlaywright")
     public ResponseEntity<String> convertSeleniumToPlaywright(@RequestBody ConversionRequest request) {

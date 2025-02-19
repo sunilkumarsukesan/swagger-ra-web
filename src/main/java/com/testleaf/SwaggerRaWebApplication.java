@@ -2,8 +2,10 @@ package com.testleaf;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.testleaf")
 public class SwaggerRaWebApplication {
 
     public static void main(String[] args) {

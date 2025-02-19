@@ -13,10 +13,6 @@ public class TestRunController {
 
     private final TestExecutor testExecutor;
 
-    public TestRunController(TestExecutor testExecutor) {
-        this.testExecutor = testExecutor;
-    }
-
     @PostMapping("/runTests")
     public ResponseEntity<?> runTests(@RequestBody TestRunRequest request) {
         try {

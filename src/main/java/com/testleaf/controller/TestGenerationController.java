@@ -3,6 +3,7 @@ package com.testleaf.controller;
 import com.testleaf.llm.LLMTestGenerator;
 import com.testleaf.llm.TestCodeGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +17,6 @@ public class TestGenerationController {
 
     private final LLMTestGenerator llmTestGenerator;
     private final TestCodeGenerator testCodeGenerator;
-
-    public TestGenerationController(LLMTestGenerator llmTestGenerator, TestCodeGenerator testCodeGenerator) {
-        this.llmTestGenerator = llmTestGenerator;
-        this.testCodeGenerator = testCodeGenerator;
-    }
 
     /**
      * Generates Rest-Assured test code from the provided API details and test types.
