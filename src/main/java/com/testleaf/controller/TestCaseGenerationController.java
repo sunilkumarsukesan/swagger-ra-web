@@ -165,6 +165,9 @@ public class TestCaseGenerationController {
 
     // Method to convert TestType object to a comma-separated string
     private String convertTestTypeToString(TestType testType) {
+        if (testType == null || (!testType.isPositive() && !testType.isNegative() && !testType.isEdge())) {
+            return "Positive"; // Default to "Positive" if all are false or if testType is null
+        }
         StringBuilder testTypeString = new StringBuilder();
         if (testType.isPositive()) {
             testTypeString.append("Positive");

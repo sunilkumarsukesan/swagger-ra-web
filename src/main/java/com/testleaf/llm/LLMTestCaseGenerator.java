@@ -36,23 +36,30 @@ public class LLMTestCaseGenerator {
             return "No valid user story description to generate test cases.";
         }
 
-        // Build the test type instruction line
-        String testTypeLine;
+        String testTypePrompt;
         if (testType == null || testType.isEmpty()) {
-            testTypeLine = "- Include Only Positive tests\n";
-        } else if ("negative".equalsIgnoreCase(testType)) {
-            testTypeLine = "- Include Only Negative tests\n";
-        } else if ("edge".equalsIgnoreCase(testType)) {
-            testTypeLine = "- Include Only Edge tests\n";
-        } else {
-            testTypeLine = "- Include Only Positive tests\n";
+            return "Only Positive tests"; // Default to positive
         }
+
+        String[] types = testType.split(",\\s*"); // Split by comma and optional space
+        int count = types.length;
+
+        if (count == 1) {
+            testTypePrompt = "Only " + types[0] + " tests";
+        } else if (count == 2) {
+            testTypePrompt = "Combination of " + types[0] + " and " + types[1] + " tests";
+        } else if (count == 3) {
+            testTypePrompt = "Combination of Positive, Negative, and Edge tests";
+        }
+        else
+            testTypePrompt = "Only Positive tests";
 
         // Build the user prompt using the user story details
         String userPrompt = "Generate test cases for the following user story description:\n"
                 + userStoryDescription + "\n"
                 + "Application URL: " + applicationUrl + "\n"
-                + "Acceptance Criteria: " + acceptanceCriteria;
+                + "Acceptance Criteria: " + acceptanceCriteria +"\n"
+                + "Test Type :"+ testTypePrompt;
 
         if (epicDescription != null && !epicDescription.isEmpty()) {
             userPrompt += "\nEpic Description: " + epicDescription;
@@ -64,17 +71,32 @@ public class LLMTestCaseGenerator {
             Map<String, String> systemMessage = new HashMap<>();
             systemMessage.put("role", "system");
 
-            String systemContent = "You are a helpful assistant that generates **manual test cases** for a user story.\n"
-                    + "Your response must contain only test case steps written in plain English, with clear instructions.\n"
-                    + "Do not include any code or automated test steps. Write them in a step-by-step format.\n\n"
-                    + "- Each test case should cover different scenarios like positive, negative, and edge cases.\n"
-                    + "- Include appropriate preconditions, actions, and expected results for each test case.\n"
-                    + "- The test cases should be comprehensive, covering all possible conditions for the user story.\n"
-                    + "- Provide test case IDs for easy reference.\n"
-                    + "- The test cases should be applicable for manual testing, no automation details should be included.\n"
-                    + "- Write the test case steps as actions to be performed manually by the tester.\n\n"
-                    + "**[IMPORTANT]**\n"
-                    + "Your response should be in **structured JSON format** as shown below:\n\n"
+            String systemContent = "Instruction:\n"
+                    + "You are a highly skilled test analyst specializing in manual test case generation. Your task is to create structured manual test cases based on the given inputs, such as:\n\n"
+                    + "- Application URL\n"
+                    + "- User Story Description\n"
+                    + "- Acceptance Criteria\n"
+                    + "- Test Types (Positive, Negative, Edge, or All)\n\n"
+                    + "Each test case should be well-structured and easy to follow for manual testers.\n\n"
+                    + "Guidelines:\n"
+                    + "- Write in a step-by-step format using plain English.\n"
+                    + "- Do not include any code or automation-related steps.\n"
+                    + "- Ensure each test case covers a different scenario (positive, negative, and edge cases).\n"
+                    + "- Each test case must have:\n"
+                    + "  - A unique Test Case ID (e.g., TC001, TC002)\n"
+                    + "  - Clear test case description\n"
+                    + "  - Preconditions (if applicable)\n"
+                    + "  - Well-defined test steps\n"
+                    + "  - Expected and actual results\n"
+                    + "  - Status (set as \"Pending\" by default)\n"
+                    + "- Ensure completeness by covering all conditions mentioned in the user story and acceptance criteria.\n\n"
+                    + "Context:\n"
+                    + "You are assisting testers who will execute these test cases manually. Your test cases should be detailed yet concise, ensuring clarity and accuracy.\n\n"
+                    + "Persona:\n"
+                    + "- You are a meticulous and detail-oriented senior test lead.\n"
+                    + "- Your responses should be precise, structured, and well-formatted.\n\n"
+                    + "Output Format:\n"
+                    + "Your response must be in structured JSON format as shown below:\n\n"
                     + "{\n"
                     + "  \"testCases\": [\n"
                     + "    {\n"
@@ -96,7 +118,12 @@ public class LLMTestCaseGenerator {
                     + "      \"Status\": \"Pending\"\n"
                     + "    }\n"
                     + "  ]\n"
-                    + "}";
+                    + "}\n\n"
+                    + "Tone:\n"
+                    + "- Professional, clear, and structured\n"
+                    + "- Concise yet detailed\n"
+                    + "- User-friendly for manual testers";
+
 
 
 
