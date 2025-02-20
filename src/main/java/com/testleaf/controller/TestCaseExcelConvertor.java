@@ -44,7 +44,9 @@ public class TestCaseExcelConvertor {
                 row.createCell(1).setCellValue(testCase.getTestCaseDescription() != null ? testCase.getTestCaseDescription() : "");
                 row.createCell(2).setCellValue(testCase.getPreRequisites() != null ? testCase.getPreRequisites() : "");
                 row.createCell(3).setCellValue(testCase.getTestSteps() != null ? testCase.getTestSteps() : "");
-                row.createCell(4).setCellValue(testCase.getActualResult() != null ? testCase.getActualResult() : "");
+                //Uncomment if you need actual results
+                //row.createCell(4).setCellValue(testCase.getActualResult() != null ? testCase.getActualResult() : "");
+                row.createCell(4).setCellValue("");
                 row.createCell(5).setCellValue(testCase.getExpectedResult() != null ? testCase.getExpectedResult() : "");
                 row.createCell(6).setCellValue(testCase.getStatus() != null ? testCase.getStatus() : "");
             }

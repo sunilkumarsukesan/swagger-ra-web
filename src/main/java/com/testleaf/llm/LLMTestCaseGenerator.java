@@ -30,7 +30,7 @@ public class LLMTestCaseGenerator {
      */
 
     public String llmGenerateTestCases(String testType, String userStoryDescription, String applicationUrl,
-                                    String acceptanceCriteria, String epicDescription) {
+                                    String acceptanceCriteria, String epicDescription, String additionalInstructions) {
 
         if (userStoryDescription == null || userStoryDescription.isEmpty()) {
             return "No valid user story description to generate test cases.";
@@ -62,7 +62,11 @@ public class LLMTestCaseGenerator {
                 + "Test Type :"+ testTypePrompt;
 
         if (epicDescription != null && !epicDescription.isEmpty()) {
-            userPrompt += "\nEpic Description: " + epicDescription;
+            userPrompt = userPrompt + "\nEpic Description: " + epicDescription;
+        }
+
+        if (additionalInstructions != null && !additionalInstructions.trim().isEmpty()) {
+            userPrompt = userPrompt + "\n[Important] Additional Instructions: " + additionalInstructions;
         }
 
         try {
@@ -142,7 +146,7 @@ public class LLMTestCaseGenerator {
             payload.put("messages", messages);
             payload.put("temperature", 0.1);
             payload.put("top_p", 0.2);
-            payload.put("max_tokens", 10000);
+            payload.put("max_tokens", 20000);
 
             ObjectMapper mapper = new ObjectMapper();
             String requestBody = mapper.writeValueAsString(payload);
@@ -158,8 +162,8 @@ public class LLMTestCaseGenerator {
 
     // For backward compatibility: defaults to positive tests if testType is not provided.
     public String generateTestCases(String userStoryDescription, String applicationUrl,
-                                    String acceptanceCriteria, String epicDescription) {
-        return llmGenerateTestCases("positive", userStoryDescription, applicationUrl, acceptanceCriteria, epicDescription);
+                                    String acceptanceCriteria, String epicDescription, String additionalInstruction) {
+        return llmGenerateTestCases("positive", userStoryDescription, applicationUrl, acceptanceCriteria, epicDescription, additionalInstruction);
     }
 
     private String callLLMApi(String requestBody) {

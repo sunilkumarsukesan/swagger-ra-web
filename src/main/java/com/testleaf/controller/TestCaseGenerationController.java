@@ -46,7 +46,8 @@ public class TestCaseGenerationController {
                     request.getUserStoryDescription(),
                     request.getApplicationUrl(),
                     request.getAcceptanceCriteria(),
-                    request.getEpicDescription()
+                    request.getEpicDescription(),
+                    request.getAdditionalInstructions()
             );
 
             // Return the manual test cases as plain text
@@ -90,6 +91,7 @@ public class TestCaseGenerationController {
         private String applicationUrl;
         private String acceptanceCriteria;
         private String epicDescription;
+        private String additionalInstructions;
 
         public TestType getTestType() {
             return testType;
@@ -129,6 +131,14 @@ public class TestCaseGenerationController {
 
         public void setEpicDescription(String epicDescription) {
             this.epicDescription = epicDescription;
+        }
+
+        public String getAdditionalInstructions() {
+            return additionalInstructions;
+        }
+
+        public void setAdditionalInstructions(String additionalInstructions) {
+            this.additionalInstructions = additionalInstructions;
         }
     }
 
